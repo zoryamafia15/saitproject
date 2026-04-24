@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styletr.css">
+    <title>DZD</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Marck+Script&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <title>DZD</title>
+    <style>
+        .profile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+        }
+
+        .profile-overlay.active {
+            display: flex;
+            animation: fadeInUp 0.3s ease;
+            
+        }
+
+        .profile-modal {
+            background: white;
+            color: black;
+            border: 1px solid black;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideInModal 0.4s ease;
+            
+        }
+
+        .profile-header {
+            position: relative;
+            padding: 2.5rem 2rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(121, 121, 121, 0.1));
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .profile-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .profile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-avatar-large {
+            width: 90px;
+            height: 90px;
+            border-radius: 30px;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            position: relative;
+        }
+
+        .profile-avatar-large::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .profile-email {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .profile-member-since {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .profile-body {
+            padding: 2rem;
+        }
+
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+
+        .profile-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .profile-stat-card {
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .profile-stat-card:hover {
+            border-color: var(--accent);
+        }
+
+        .profile-stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .profile-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .profile-goals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .profile-goal-tag {
+            padding: 6px 16px;
+            background: #9e9e9e;
+            border: 1px solid black;
+            border-radius: var(--radius-xl);
+            font-size: 0.8rem;
+            color: var(--accent-light);
+            font-weight: 500;
+        }
+        .profile-goal-tag:hover {
+            background: #31aabd;
+            border: 1px solid black;
+            
+        }
+
+        .profile-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .profile-activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .profile-activity-item:hover {
+            border-color: var(--accent);
+        }
+
+        .profile-activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .profile-activity-text {
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .profile-activity-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .profile-edit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .profile-edit-btn:hover {
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+         .trainers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .trainer-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .trainer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .trainer-img {
+            height: 250px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .trainer-info {
+            padding: 1rem;
+        }
+
+        .trainer-specialty {
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .trainers-section {
+            background: var(--bg-secondary);
+            padding: 100px 0;
+            
+        }
+
+        .trainers-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .trainers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            
+        }
+
+        .trainer-card {
+            
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .trainer-card::before {
+            content: '';
+            position: flex;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, transparent, rgba(108, 92, 231, 0.3), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .trainer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-color: transparent;
+        }
+
+        .trainer-card:hover::before {
+            opacity: 1;
+        }
+
+        .trainer-header {
+            position: relative;
+            padding: 2rem 2rem 0;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .trainer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trainer-avatar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+        }
+
+        .trainer-info {
+            flex: 1;
+        }
+
+        .trainer-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .trainer-specialty {
+            font-size: 0.85rem;
+            color: var(--accent-light);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .trainer-bio {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .trainer-stats {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trainer-stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .trainer-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .trainer-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .trainer-programs {
+            padding: 1.5rem 2rem;
+        }
+
+        .trainer-programs-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .program-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .program-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .program-item:hover {
+            background: rgba(108, 92, 231, 0.1);
+            border-color: rgba(108, 92, 231, 0.3);
+            transform: translateX(4px);
+        }
+
+        .program-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .program-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .program-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .program-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .program-difficulty {
+            padding: 4px 10px;
+            border-radius: var(--radius-xl);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        .difficulty-beginner { background: rgba(0, 184, 148, 0.15); color: var(--success); }
+        .difficulty-intermediate { background: rgba(253, 203, 110, 0.15); color: var(--warning); }
+        .difficulty-advanced { background: rgba(225, 112, 85, 0.15); color: var(--danger); }
+    </style>
+</head>
+<body>
+<div class="intromenu" style="position: sticky; top: 0; margin-bottom: 100px;">
+    <header class="header" >
+        <nav>
+            <a href="index.html" class="logon">D<span>Z</span>D</a>
+        
+            <div class="menu">
+                <ul>
+                    <li><a href="trainers.html">ТРЕНИРОВКИ</a></li>
+                    <li><a href="trenera.html">ТРЕНЕРЫ</a></li>
+                    <li><a href="contact.html">КОНТАКТЫ</a></li>
+                    <li><a href="aboutus.html">ОЦЕНИТЕ НАС</a></li>
+                </ul>
+            </div>
+        
+            <div class="btnns">
+
+                    <button class="btnn" onclick="openProfile()">
+                        <span class="menulogin">ПРОФИЛЬ</span>
+                    </button>
+
+            </div>
+        
+        </nav>
+        
+    </header>
+</div>
+
+    <section class="trainers-section" id="trainers">
+        <div class="trainers-inner">
+            <div class="section-header animate-on-scroll">
+                <div class="section-label" style="font-size: 40px; text-align: center; color: white; font-weight: 900; margin-bottom: 10px;">Наша команда</div>
+                </div>
+            <div class="trainers-grid" id="trainersGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </section>
+
+
+    
+    
+    
+    
+    
+    
+
+    <script>
+        // ===== DATA =====
+        const trainers = [
+            {
+                id: 1,
+                name: "Дмитрий Волков",
+                initials: "ДВ",
+                specialty: "Силовые тренировки",
+                bio: "Мастер спорта по пауэрлифтингу. 12 лет опыта. Специализация — базовые движения и набор мышечной массы.",
+                avatarGradient: "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+                stats: { programs: 8, clients: 340, experience: "12 лет", rating: "4.9" },
+                programs: [
+                    { id: 101, name: "Силовой блок", difficulty: "advanced", duration: "12 недель", days: 4, tags: ["сила", "масса", "база"], exercises: [
+                        { name: "Жим лёжа", detail: "5×5" }, { name: "Приседания", detail: "5×5" }, { name: "Становая тяга", detail: "3×5" }, { name: "Жим стоя", detail: "4×6" }, { name: "Тяга штанги", detail: "4×8" }, { name: "Подъёмы на бицепс", detail: "3×10" }
+                    ]},
+                    { id: 102, name: "Базовая масса", difficulty: "intermediate", duration: "8 недель", days: 3, tags: ["масса", "база", "новичкам"], exercises: [
+                        { name: "Приседания", detail: "4×8" }, { name: "Жим лёжа", detail: "4×8" }, { name: "Тяга штанги", detail: "4×8" }, { name: "Отжимания на брусьях", detail: "3×10" }, { name: "Подтягивания", detail: "3×8" }
+                    ]},
+                    { id: 103, name: "Пауэрлифтинг PRO", difficulty: "advanced", duration: "16 недель", days: 5, tags: ["сила", "соревнования", "PRO"], exercises: [
+                        { name: "Приседания", detail: "6×3" }, { name: "Жим лёжа", detail: "6×3" }, { name: "Становая тяга", detail: "5×3" }, { name: "Жим ногами", detail: "4×10" }, { name: "Гиперэкстензия", detail: "3×15" }
+                    ]}
+                ]
+            },
+            {
+                id: 2,
+                name: "Анна Козлова",
+                initials: "АК",
+                specialty: "Функциональный тренинг & HIIT",
+                bio: "Сертифицированный тренер CrossFit L3. Призёр региональных соревнований. Специализация — функциональная подготовка и жиросжигание.",
+                avatarGradient: "linear-gradient(135deg, #e17055, #fdcb6e)",
+                stats: { programs: 6, clients: 520, experience: "8 лет", rating: "4.8" },
+                programs: [
+                    { id: 201, name: "HIIT-Жиросжигание", difficulty: "intermediate", duration: "6 недель", days: 4, tags: ["жиросжигание", "кардио", "HIIT"], exercises: [
+                        { name: "Бёрпи", detail: "4×15" }, { name: "Прыжки на коробку", detail: "4×12" }, { name: "Махи гирей", detail: "4×20" }, { name: "Трастеры", detail: "4×10" }, { name: "Скалолаз", detail: "4×30" }
+                    ]},
+                    { id: 202, name: "Кардио-интервалы", difficulty: "beginner", duration: "8 недель", days: 3, tags: ["кардио", "выносливость", "новичкам"], exercises: [
+                        { name: "Бег на месте", detail: "30 сек" }, { name: "Джампинг джек", detail: "4×20" }, { name: "Приседания с прыжком", detail: "3×12" }, { name: "Планка", detail: "3×45 сек" }, { name: "Высокие колени", detail: "3×20" }
+                    ]},
+                    { id: 203, name: "CrossFit WOD", difficulty: "advanced", duration: "10 недель", days: 5, tags: ["crossfit", "сила", "выносливость"], exercises: [
+                        { name: "Clean & Jerk", detail: "5×3" }, { name: "Snatch", detail: "5×2" }, { name: "Box Jumps", detail: "5×10" }, { name: "Rope Climb", detail: "3×1" }, { name: "Assault Bike", detail: "5×200м" }
+                    ]}
+                ]
+            },
+            {
+                id: 3,
+                name: "Мария Светлова",
+                initials: "МС",
+                specialty: "Йога & Растяжка",
+                bio: "Сертифицированный инструктор йоги (RYT-500). 10 лет практики. Специализация — гибкость, мобильность и восстановление.",
+                avatarGradient: "linear-gradient(135deg, #00b894, #00cec9)",
+                stats: { programs: 5, clients: 280, experience: "10 лет", rating: "5.0" },
+                programs: [
+                    { id: 301, name: "Растяжка и мобильность", difficulty: "beginner", duration: "10 недель", days: 3, tags: ["гибкость", "мобильность", "восстановление"], exercises: [
+                        { name: "Кошка-корова", detail: "3×10" }, { name: "Поза голубя", detail: "2×60 сек" }, { name: "Складка", detail: "3×45 сек" }, { name: "Поза собаки", detail: "3×30 сек" }, { name: "Мостик", detail: "3×15" }
+                    ]},
+                    { id: 302, name: "Утренняя йога", difficulty: "beginner", duration: "4 недели", days: 5, tags: ["йога", "утро", "энергия"], exercises: [
+                        { name: "Сурья Намаскар", detail: "5 кругов" }, { name: "Воин I", detail: "2×30 сек" }, { name: "Воин II", detail: "2×30 сек" }, { name: "Поза дерева", detail: "2×30 сек" }, { name: "Шавасана", detail: "5 мин" }
+                    ]},
+                    { id: 303, name: "Восстановление после тренировок", difficulty: "intermediate", duration: "6 недель", days: 2, tags: ["восстановление", "релакс", "здоровье"], exercises: [
+                        { name: "Пена-ролл", detail: "10 мин" }, { name: "Динамическая растяжка", detail: "15 мин" }, { name: "Йога-нидра", detail: "20 мин" }, { name: "Дыхательные практики", detail: "10 мин" }
+                    ]}
+                ]
+            },
+            {
+                id: 4,
+                name: "Максим Орлов",
+                initials: "МО",
+                specialty: "Бодибилдинг & Эстетика",
+                bio: "IFBB Pro. Победитель национальных чемпионатов. Специализация — гипертрофия, симметрия и подготовка к соревнованиям.",
+                avatarGradient: "linear-gradient(135deg, #fd79a8, #e84393)",
+                stats: { programs: 7, clients: 450, experience: "15 лет", rating: "4.9" },
+                programs: [
+                    { id: 401, name: "Грудь + Трицепс", difficulty: "intermediate", duration: "8 недель", days: 4, tags: ["грудь", "трицепс", "гипертрофия"], exercises: [
+                        { name: "Жим лёжа наклон", detail: "4×10" }, { name: "Разводка гантелей", detail: "3×12" }, { name: "Кроссовер", detail: "3×15" }, { name: "Французский жим", detail: "3×12" }, { name: "Разгибания на блоке", detail: "3×15" }
+                    ]},
+                    { id: 402, name: "Спина + Бицепс", difficulty: "intermediate", duration: "8 недель", days: 4, tags: ["спина", "бицепс", "гипертрофия"], exercises: [
+                        { name: "Подтягивания", detail: "4×10" }, { name: "Тяга штанги в наклоне", detail: "4×10" }, { name: "Тяга верхнего блока", detail: "3×12" }, { name: "Подъёмы на бицепс", detail: "3×12" }, { name: "Молотки", detail: "3×12" }
+                    ]},
+                    { id: 403, name: "Плечи + Пресс", difficulty: "beginner", duration: "6 недель", days: 3, tags: ["плечи", "пресс", "эстетика"], exercises: [
+                        { name: "Жим гантелей сидя", detail: "4×10" }, { name: "Махи в стороны", detail: "4×15" }, { name: "Махи в наклоне", detail: "3×15" }, { name: "Скручивания", detail: "4×20" }, { name: "Подъёмы ног", detail: "3×15" }
+                    ]},
+                    { id: 404, name: "Ноги — полная программа", difficulty: "advanced", duration: "10 недель", days: 2, tags: ["ноги", "квадрицепс", "бицепс бедра"], exercises: [
+                        { name: "Приседания со штангой", detail: "5×8" }, { name: "Жим ногами", detail: "4×12" }, { name: "Румынская тяга", detail: "4×10" }, { name: "Разгибания ног", detail: "3×15" }, { name: "Сгибания ног", detail: "3×15" }, { name: "Подъёмы на носки", detail: "4×20" }
+                    ]}
+                ]
+            },
+            {
+                id: 5,
+                name: "Елена Морозова",
+                initials: "ЕМ",
+                specialty: "Пилатес & Коррекция фигуры",
+                bio: "Сертифицированный инструктор Pilates Method Alliance. 9 лет опыта. Специализация — осанка и коррекция фигуры.",
+                avatarGradient: "linear-gradient(135deg, #74b9ff, #0984e3)",
+                stats: { programs: 4, clients: 190, experience: "9 лет", rating: "4.7" },
+                programs: [
+                    { id: 501, name: "Пилатес для начинающих", difficulty: "beginner", duration: "6 недель", days: 3, tags: ["пилатес", "новичкам", "осанка"], exercises: [
+                        { name: "Сотня", detail: "5×10" }, { name: "Roll Up", detail: "3×8" }, { name: "Single Leg Stretch", detail: "3×10" }, { name: "Plank", detail: "3×30 сек" }, { name: "Swan", detail: "3×8" }
+                    ]},
+                    { id: 502, name: "Коррекция осанки", difficulty: "beginner", duration: "8 недель", days: 4, tags: ["осанка", "здоровье", "коррекция"], exercises: [
+                        { name: "Wall Angels", detail: "3×10" }, { name: "Cat-Cow", detail: "3×10" }, { name: "Bird-Dog", detail: "3×10" }, { name: "Thoracic Extension", detail: "3×8" }, { name: "Chin Tucks", detail: "3×10" }
+                    ]},
+                    { id: 503, name: "Core Strength", difficulty: "intermediate", duration: "6 недель", days: 3, tags: ["кор", "пресс", "стабильность"], exercises: [
+                        { name: "Dead Bug", detail: "3×10" }, { name: "Plank Variations", detail: "4×30 сек" }, { name: "Pallof Press", detail: "3×12" }, { name: "Russian Twist", detail: "3×20" }, { name: "Hollow Body Hold", detail: "3×20 сек" }
+                    ]}
+                ]
+            },
+            {
+                id: 6,
+                name: "Артём Кузнецов",
+                initials: "АК",
+                specialty: "Бег & Выносливость",
+                bio: "Мастер спорта по лёгкой атлетике. Марафонец с PB 2:28. Специализация — подготовка к забегам и развитие выносливости.",
+                avatarGradient: "linear-gradient(135deg, #ffeaa7, #fdcb6e)",
+                stats: { programs: 5, clients: 210, experience: "11 лет", rating: "4.8" },
+                programs: [
+                    { id: 601, name: "Подготовка к 5K", difficulty: "beginner", duration: "8 недель", days: 3, tags: ["бег", "5K", "новичкам"], exercises: [
+                        { name: "Лёгкий бег", detail: "20 мин" }, { name: "Интервалы", detail: "6×400м" }, { name: "Темповый бег", detail: "15 мин" }, { name: "Длинная пробежка", detail: "5 км" }, { name: "Восстановительный бег", detail: "15 мин" }
+                    ]},
+                    { id: 602, name: "Марафон-тренинг", difficulty: "advanced", duration: "16 недель", days: 5, tags: ["марафон", "выносливость", "PRO"], exercises: [
+                        { name: "Длинная пробежка", detail: "25-35 км" }, { name: "Темповый бег", detail: "10 км" }, { name: "Интервалы Yasso 800", detail: "10×800м" }, { name: "Лёгкий бег", detail: "8 км" }, { name: "Силовая для бегунов", detail: "45 мин" }
+                    ]},
+                    { id: 603, name: "Силовая для бегунов", difficulty: "intermediate", duration: "6 недель", days: 2, tags: ["сила", "бег", "профилактика"], exercises: [
+                        { name: "Приседания на одной ноге", detail: "3×10" }, { name: "Выпады", detail: "3×12" }, { name: "Подъёмы на носки", detail: "3×20" }, { name: "Планка боковая", detail: "3×30 сек" }, { name: "Ягодичный мост", detail: "3×15" }
+                    ]}
+                ]
+            }
+        ];
+
+        const recSteps = [
+            {
+                id: "goal",
+                label: "Цель",
+                question: "Какова ваша основная цель?",
+                description: "Выберите главную цель тренировок",
+                options: [
+                    { value: "weight_loss", icon: "🔥", title: "Жиросжигание", desc: "Снизить вес и процент жира" },
+                    { value: "muscle_gain", icon: "💪", title: "Набор массы", desc: "Увеличить мышечную массу" },
+                    { value: "strength", icon: "🏋️", title: "Сила", desc: "Увеличить силовые показатели" },
+                    { value: "endurance", icon: "🏃", title: "Выносливость", desc: "Развить кардио-выносливость" },
+                    { value: "flexibility", icon: "🧘", title: "Гибкость", desc: "Улучшить мобильность и растяжку" },
+                    { value: "health", icon: "❤️", title: "Здоровье", desc: "Общее укрепление организма" }
+                ]
+            },
+            {
+                id: "level",
+                label: "Уровень",
+                question: "Ваш уровень подготовки?",
+                description: "Будьте честны — это поможет подобрать оптимальную нагрузку",
+                options: [
+                    { value: "beginner", icon: "🌱", title: "Начинающий", desc: "Менее 6 месяцев опыта" },
+                    { value: "intermediate", icon: "🌿", title: "Средний", desc: "6 месяцев — 2 года" },
+                    { value: "advanced", icon: "🌳", title: "Продвинутый", desc: "Более 2 лет опыта" }
+                ]
+            },
+            {
+                id: "days",
+                label: "Дни",
+                question: "Сколько дней в неделю готовы тренироваться?",
+                description: "Реалистично оцените своё расписание",
+                options: [
+                    { value: "2", icon: "📅", title: "2 дня", desc: "Минимум для прогресса" },
+                    { value: "3", icon: "📅", title: "3 дня", desc: "Оптимальный баланс" },
+                    { value: "4", icon: "📅", title: "4 дня", desc: "Хороший темп" },
+                    { value: "5", icon: "📅", title: "5 дней", desc: "Максимальная отдача" }
+                ]
+            },
+            {
+                id: "equipment",
+                label: "Оборудование",
+                question: "Какое оборудование доступно?",
+                description: "Выберите всё, что у вас есть",
+                options: [
+                    { value: "gym", icon: "🏢", title: "Полный зал", desc: "Штанги, тренажёры, гантели" },
+                    { value: "dumbbells", icon: "🏋️", title: "Гантели", desc: "Домашний набор гантелей" },
+                    { value: "bodyweight", icon: "🤸", title: "Своё тело", desc: "Без оборудования" },
+                    { value: "bands", icon: "🎗️", title: "Резинки", desc: "Фитнес-резинки и эспандеры" }
+                ]
+            }
+        ];
+
+        // ===== STATE =====
+        let recAnswers = {};
+        let currentRecStep = 0;
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTrainers();
+            renderRecWizard();
+            initScrollAnimations();
+            initNavbar();
+            initRipple();
+        });
+
+        // ===== RENDER TRAINERS =====
+        function renderTrainers() {
+            const grid = document.getElementById('trainersGrid');
+            grid.innerHTML = trainers.map((trainer, i) => `
+                <div class="trainer-card animate-on-scroll delay-${Math.min(i + 1, 6)}">
+                    <div class="trainer-header">
+                        <div class="trainer-avatar" style="background: ${trainer.avatarGradient}">
+                            ${trainer.initials}
+                        </div>
+                        <div class="trainer-info">
+                            <div class="trainer-name">${trainer.name}</div>
+                            <div class="trainer-specialty">${trainer.specialty}</div>
+                            <div class="trainer-bio">${trainer.bio}</div>
+                        </div>
+                    </div>
+                    <div class="trainer-stats">
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.programs}</div>
+                            <div class="trainer-stat-label">Программ</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.clients}</div>
+                            <div class="trainer-stat-label">Клиентов</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.experience}</div>
+                            <div class="trainer-stat-label">Опыт</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.rating}★</div>
+                            <div class="trainer-stat-label">Рейтинг</div>
+                        </div>
+                    </div>
+                    <div class="trainer-programs">
+                        <div class="trainer-programs-title">Программы тренировок</div>
+                        <div class="program-list">
+                            ${trainer.programs.map(program => `
+                                <div class="program-item" onclick="openProgramModal(${trainer.id}, ${program.id})">
+                                    <div class="program-icon" style="background: ${trainer.avatarGradient}20; color: ${trainer.avatarGradient.includes('6c5ce7') ? '#a29bfe' : trainer.avatarGradient.includes('e17055') ? '#fdcb6e' : trainer.avatarGradient.includes('00b894') ? '#00cec9' : trainer.avatarGradient.includes('fd79a8') ? '#e84393' : trainer.avatarGradient.includes('74b9ff') ? '#0984e3' : '#fdcb6e'}">
+                                        📋
+                                    </div>
+                                    <div class="program-details">
+                                        <div class="program-name">${program.name}</div>
+                                        <div class="program-meta">${program.duration} • ${program.days} дн/нед</div>
+                                    </div>
+                                    <span class="program-difficulty difficulty-${program.difficulty}">
+                                        ${program.difficulty === 'beginner' ? 'Начальный' : program.difficulty === 'intermediate' ? 'Средний' : 'Продвинутый'}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-init scroll animations for new elements
+            setTimeout(initScrollAnimations, 100);
+        }
+
+        // ===== RECOMMENDATION WIZARD =====
+        function renderRecWizard() {
+            const stepsContainer = document.getElementById('recSteps');
+            const formContainer = document.getElementById('recFormSteps');
+
+            stepsContainer.innerHTML = recSteps.map((step, i) => `
+                <div class="rec-step ${i === 0 ? 'active' : ''}" data-step="${i}">
+                    <div class="rec-step-circle">${i + 1}</div>
+                    <div class="rec-step-label">${step.label}</div>
+                    ${i < recSteps.length - 1 ? `<div class="rec-step-line" id="line-${i}"></div>` : ''}
+                </div>
+            `).join('');
+
+            formContainer.innerHTML = recSteps.map((step, i) => `
+                <div class="rec-form-step ${i === 0 ? 'active' : ''}" data-step="${i}">
+                    <div class="rec-question">${step.question}</div>
+                    <div class="rec-description">${step.description}</div>
+                    <div class="rec-options">
+                        ${step.options.map(opt => `
+                            <div class="rec-option" data-step="${i}" data-value="${opt.value}" onclick="selectRecOption(this, '${step.id}', '${opt.value}')">
+                                <div class="rec-option-icon">${opt.icon}</div>
+                                <div class="rec-option-title">${opt.title}</div>
+                                <div class="rec-option-desc">${opt.desc}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="rec-nav">
+                        <button class="btn btn-secondary" onclick="prevRecStep()" ${i === 0 ? 'disabled style="opacity:0.3;pointer-events:none"' : ''}>← Назад</button>
+                        <button class="btn btn-primary" onclick="nextRecStep()" id="recNextBtn">Далее →</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectRecOption(el, stepId, value) {
+            const stepEl = el.parentElement;
+            stepEl.querySelectorAll('.rec-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            recAnswers[stepId] = value;
+        }
+
+        function nextRecStep() {
+            const currentStep = recSteps[currentRecStep];
+            if (!recAnswers[currentStep.id]) {
+                showToast('Пожалуйста, выберите вариант', 'info');
+                return;
+            }
+
+            if (currentRecStep < recSteps.length - 1) {
+                // Move to next step
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('completed');
+
+                const line = document.getElementById(`line-${currentRecStep}`);
+                if (line) line.classList.add('filled');
+
+                currentRecStep++;
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.add('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('active');
+
+                // Update last button text
+                if (currentRecStep === recSteps.length - 1) {
+                    document.getElementById('recNextBtn').textContent = '🎯 Получить результаты';
+                }
+            } else {
+                // Show results
+                generateRecommendations();
+            }
+        }
+
+        function prevRecStep() {
+            if (currentRecStep > 0) {
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('active');
+
+                currentRecStep--;
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.add('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('completed');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('active');
+
+                const line = document.getElementById(`line-${currentRecStep}`);
+                if (line) line.classList.remove('filled');
+
+                document.getElementById('recNextBtn').textContent = 'Далее →';
+            }
+        }
+
+        // ===== SMART RECOMMENDATION ENGINE =====
+        function generateRecommendations() {
+            const results = [];
+
+            trainers.forEach(trainer => {
+                trainer.programs.forEach(program => {
+                    let score = 0;
+                    let matchReasons = [];
+
+                    // 1. Goal matching
+                    const goalMapping = {
+                        weight_loss: ['жиросжигание', 'кардио', 'HIIT'],
+                        muscle_gain: ['масса', 'гипертрофия', 'эстетика'],
+                        strength: ['сила', 'база', 'пауэрлифтинг'],
+                        endurance: ['выносливость', 'кардио', 'бег'],
+                        flexibility: ['гибкость', 'мобильность', 'растяжка', 'йога', 'пилатес'],
+                        health: ['здоровье', 'восстановление', 'осанка', 'кор']
+                    };
+
+                    const goalKeywords = goalMapping[recAnswers.goal] || [];
+                    const hasGoalMatch = program.tags.some(tag =>
+                        goalKeywords.some(kw => tag.toLowerCase().includes(kw))
+                    );
+                    if (hasGoalMatch) {
+                        score += 30;
+                        matchReasons.push('Совпадение по цели');
+                    }
+
+                    // 2. Level matching
+                    if (program.difficulty === recAnswers.level) {
+                        score += 25;
+                        matchReasons.push('Подходит по уровню');
+                    } else if (
+                        (recAnswers.level === 'intermediate' && program.difficulty === 'beginner') ||
+                        (recAnswers.level === 'advanced' && program.difficulty === 'intermediate')
+                    ) {
+                        score += 10;
+                        matchReasons.push('Можно попробовать');
+                    }
+
+                    // 3. Days matching
+                    const preferredDays = parseInt(recAnswers.days);
+                    if (program.days === preferredDays) {
+                        score += 20;
+                        matchReasons.push('Идеальное кол-во дней');
+                    } else if (Math.abs(program.days - preferredDays) <= 1) {
+                        score += 10;
+                        matchReasons.push('Близко к расписанию');
+                    }
+
+                    // 4. Equipment compatibility
+                    const equipMapping = {
+                        gym: ['база', 'сила', 'масса', 'гипертрофия', 'кроссфит', 'соревнования', 'PRO'],
+                        dumbbells: ['масса', 'гипертрофия', 'эстетика'],
+                        bodyweight: ['жиросжигание', 'кардио', 'HIIT', 'новичкам', 'пилатес', 'йога', 'осанка'],
+                        bands: ['восстановление', 'гибкость', 'мобильность', 'осанка']
+                    };
+
+                    const equipKeywords = equipMapping[recAnswers.equipment] || [];
+                    const hasEquipMatch = program.tags.some(tag =>
+                        equipKeywords.some(kw => tag.toLowerCase().includes(kw))
+                    );
+                    if (hasEquipMatch) {
+                        score += 15;
+                        matchReasons.push('Подходит по оборудованию');
+                    }
+
+                    // 5. Specialty bonus (trainer specialization matches goal)
+                    const specialtyMapping = {
+                        weight_loss: ['Функциональный', 'HIIT'],
+                        muscle_gain: ['Бодибилдинг', 'Силовые'],
+                        strength: ['Силовые', 'Пауэрлифтинг'],
+                        endurance: ['Бег', 'Выносливость'],
+                        flexibility: ['Йога', 'Растяжка'],
+                        health: ['Пилатес', 'Йога', 'Растяжка']
+                    };
+
+                    const specKeywords = specialtyMapping[recAnswers.goal] || [];
+                    if (specKeywords.some(kw => trainer.specialty.includes(kw))) {
+                        score += 10;
+                        matchReasons.push('Специализация тренера');
+                    }
+
+                    // Add some randomness for variety
+                    score += Math.random() * 5;
+
+                    if (score >= 30) {
+                        const matchPercent = Math.min(Math.round((score / 100) * 100), 98);
+                        results.push({
+                            trainer,
+                            program,
+                            score: matchPercent,
+                            reasons: matchReasons
+                        });
+                    }
+                });
+            });
+
+            // Sort by score descending
+            results.sort((a, b) => b.score - a.score);
+
+            // Take top 6
+            const topResults = results.slice(0, 6);
+
+            renderRecResults(topResults);
+        }
+
+        function renderRecResults(results) {
+            // Hide wizard steps, show results
+            document.querySelectorAll('.rec-form-step').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.rec-step').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('completed');
+            });
+            document.querySelectorAll('.rec-step-line').forEach(el => el.classList.add('filled'));
+
+            const resultsContainer = document.getElementById('recResults');
+            resultsContainer.classList.add('active');
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="rec-results-header">
+                        <h3>😔 Не найдено подходящих программ</h3>
+                        <p>Попробуйте изменить параметры поиска</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="resetRecWizard()" style="margin: 0 auto; display: block;">🔄 Начать заново</button>
+                `;
+                return;
+            }
+
+            resultsContainer.innerHTML = `
+                <div class="rec-results-header">
+                    <h3>🎯 Ваши персональные рекомендации</h3>
+                    <p>Мы проанализировали ${results.length} программ и отобрали лучшие для вас</p>
+                </div>
+                <div class="rec-results-grid">
+                    ${results.map(r => `
+                        <div class="rec-result-card">
+                            <div class="rec-match-badge">${r.score}% совпадение</div>
+                            <div class="rec-result-trainer">
+                                <div class="rec-result-avatar" style="background: ${r.trainer.avatarGradient}">${r.trainer.initials}</div>
+                                <div>
+                                    <div class="rec-result-trainer-name">${r.trainer.name}</div>
+                                    <div class="rec-result-trainer-spec">${r.trainer.specialty}</div>
+                                </div>
+                            </div>
+                            <div class="rec-result-program">${r.program.name}</div>
+                            <div class="rec-result-tags">
+                                ${r.program.tags.map(t => `<span class="rec-result-tag">${t}</span>`).join('')}
+                                <span class="rec-result-tag">${r.program.duration}</span>
+                                <span class="rec-result-tag">${r.program.days} дн/нед</span>
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                ${r.reasons.join(' • ')}
+                            </div>
+                            <button class="rec-result-btn" onclick="openProgramModal(${r.trainer.id}, ${r.program.id})">
+                                Подробнее о программе →
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-secondary" onclick="resetRecWizard()">🔄 Пройти заново</button>
+                </div>
+            `;
+
+            showToast(`Найдено ${results.length} подходящих программ!`, 'success');
+        }
+
+        function resetRecWizard() {
+            recAnswers = {};
+            currentRecStep = 0;
+
+            document.getElementById('recResults').classList.remove('active');
+            document.getElementById('recResults').innerHTML = '';
+
+            document.querySelectorAll('.rec-form-step').forEach(el => el.classList.remove('active'));
+            document.querySelector('.rec-form-step[data-step="0"]').classList.add('active');
+
+            document.querySelectorAll('.rec-step').forEach(el => {
+                el.classList.remove('active', 'completed');
+            });
+            document.querySelector('.rec-step[data-step="0"]').classList.add('active');
+
+            document.querySelectorAll('.rec-step-line').forEach(el => el.classList.remove('filled'));
+
+            document.querySelectorAll('.rec-option').forEach(el => el.classList.remove('selected'));
+
+            document.getElementById('recNextBtn').textContent = 'Далее →';
+        }
+
+        // ===== PROGRAM MODAL =====
+        function openProgramModal(trainerId, programId) {
+            const trainer = trainers.find(t => t.id === trainerId);
+            const program = trainer.programs.find(p => p.id === programId);
+
+            if (!trainer || !program) return;
+
+            const modal = document.getElementById('programModal');
+            modal.innerHTML = `
+                <button class="program-modal-close" onclick="closeProgramModal()">✕</button>
+                <div class="program-modal-trainer">
+                    <div class="rec-result-avatar" style="background: ${trainer.avatarGradient}">${trainer.initials}</div>
+                    <div>
+                        <div style="font-size: 0.85rem; font-weight: 600;">${trainer.name}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">${trainer.specialty}</div>
+                    </div>
+                </div>
+                <h2>${program.name}</h2>
+                <div style="display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                    <span class="program-difficulty difficulty-${program.difficulty}" style="font-size: 0.75rem; padding: 6px 14px;">
+                        ${program.difficulty === 'beginner' ? 'Начальный' : program.difficulty === 'intermediate' ? 'Средний' : 'Продвинутый'}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+                        📅 ${program.duration}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+                        🔄 ${program.days} дн/нед
+                    </span>
+                </div>
+                <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${program.tags.map(t => `<span class="rec-result-tag">${t}</span>`).join('')}
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem;">Упражнения</div>
+                    <div class="program-modal-exercises">
+                        ${program.exercises.map((ex, i) => `
+                            <div class="exercise-item">
+                                <div class="exercise-num">${i + 1}</div>
+                                <div class="exercise-name">${ex.name}</div>
+                                <div class="exercise-detail">${ex.detail}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="profile-edit-btn" style="margin-top: 2rem;" onclick="startProgram('${trainer.name}', '${program.name}')">
+                    🚀 Начать программу
+                </button>
+            `;
+
+            document.getElementById('programModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProgramModal() {
+            document.getElementById('programModalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeProgramModalOutside(e) {
+            if (e.target === document.getElementById('programModalOverlay')) {
+                closeProgramModal();
+            }
+        }
+
+        function startProgram(trainerName, programName) {
+            closeProgramModal();
+            showToast(`Программа "${programName}" добавлена в ваш план!`, 'success');
+        }
+
+        // ===== PROFILE =====
+        function openProfile() {
+            document.getElementById('profileOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfile() {
+            document.getElementById('profileOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeProfileOutside(e) {
+            if (e.target === document.getElementById('profileOverlay')) {
+                closeProfile();
+            }
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✅' : 'ℹ️'}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = '0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ===== SCROLL ANIMATIONS =====
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // ===== NAVBAR SCROLL =====
+        function initNavbar() {
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // ===== RIPPLE EFFECT =====
+        function initRipple() {
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn');
+                if (!btn) return;
+
+                const circle = document.createElement('span');
+                circle.className = 'btn-ripple';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                circle.style.width = circle.style.height = size + 'px';
+                circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                btn.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+        }
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') {
+                links.style.display = 'none';
+            } else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '72px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.background = 'rgba(10,10,10,0.98)';
+                links.style.padding = '1.5rem';
+                links.style.borderBottom = '1px solid var(--border)';
+            }
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeProfile();
+                closeProgramModal();
+            }
+        });
+    </script>
+       
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="apps.js"></script>
+
+<!-- PROFILE OVERLAY -->
+    <div class="profile-overlay" id="profileOverlay" onclick="closeProfileOutside(event)">
+        <div class="profile-modal">
+            <div class="profile-header">
+                <button class="profile-close" onclick="closeProfile()">✕</button>
+                <div class="profile-user-info">
+                    <div class="profile-avatar-large">ДС</div>
+                    <div>
+                        <div class="profile-name">Даня Савченко</div>
+                        <div class="profile-email">daniilka@gmail.com</div>
+                        <div class="profile-member-since">📅 Участник с октября 2025</div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-section">
+                    <div class="profile-section-title">📊 Статистика</div>
+                    <div class="profile-stats-grid">
+                        <div class="profile-stat-card">
+                            <div class="profile-stat-icon">🏋️</div>
+                            <div class="profile-stat-value">40</div>
+                            <div class="profile-stat-label">Тренировок</div>
+                        </div>
+                        <div class="profile-stat-card">
+                            <div class="profile-stat-icon">⏱️</div>
+                            <div class="profile-stat-value">52ч</div>
+                            <div class="profile-stat-label">Время</div>
+                        </div>
+                        <div class="profile-stat-card">
+                            <div class="profile-stat-icon">🔥</div>
+                            <div class="profile-stat-value">6.4K</div>
+                            <div class="profile-stat-label">Калории</div>
+                        </div>
+                        <div class="profile-stat-card">
+                            <div class="profile-stat-icon">🏆</div>
+                            <div class="profile-stat-value">5</div>
+                            <div class="profile-stat-label">Достижения</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-section-title">🎯 Мои цели</div>
+                    <div class="profile-goals">
+                        <span class="profile-goal-tag">Набор массы</span>
+                        <span class="profile-goal-tag">Сила</span>
+                        <span class="profile-goal-tag">Выносливость</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-section-title">📋 Активные программы</div>
+                    <div class="profile-activity-list">
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--accent);"></div>
+                            <div class="profile-activity-text">Силовой блок — Неделя 6 из 12</div>
+                            <div class="profile-activity-date">Тренер: Дмитрий Волков</div>
+                        </div>
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--success);"></div>
+                            <div class="profile-activity-text">Кардио-интервалы — Неделя 3 из 8</div>
+                            <div class="profile-activity-date">Тренер: Анна Козлова</div>
+                        </div>
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--warning);"></div>
+                            <div class="profile-activity-text">Растяжка и мобильность — Неделя 10 из 10</div>
+                            <div class="profile-activity-date">Тренер: Мария Светлова</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-section-title">🕐 Последняя активность</div>
+                    <div class="profile-activity-list">
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--success);"></div>
+                            <div class="profile-activity-text">Завершена тренировка: «Грудь + Трицепс»</div>
+                            <div class="profile-activity-date">Сегодня</div>
+                        </div>
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--accent);"></div>
+                            <div class="profile-activity-text">Новый рекорд: Жим лёжа 70 кг × 5</div>
+                            <div class="profile-activity-date">Вчера</div>
+                        </div>
+                        <div class="profile-activity-item">
+                            <div class="profile-activity-dot" style="background: var(--warning);"></div>
+                            <div class="profile-activity-text">Начата программа: «Кардио-интервалы»</div>
+                            <div class="profile-activity-date">3 дня назад</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ===== DATA =====
+        const trainers = [
+            {
+                id: 1,
+                name: "Дмитрий Волков",
+                initials: "ДВ",
+                specialty: "Силовые тренировки",
+                bio: "Мастер спорта по пауэрлифтингу. 12 лет опыта. Специализация — базовые движения и набор мышечной массы.",
+                avatarGradient: "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+                stats: { programs: 8, clients: 340, experience: "12 лет", rating: "4.9" },
+                programs: [
+                    { id: 101, name: "Силовой блок", difficulty: "advanced", duration: "12 недель", days: 4, tags: ["сила", "масса", "база"], exercises: [
+                        { name: "Жим лёжа", detail: "5×5" }, { name: "Приседания", detail: "5×5" }, { name: "Становая тяга", detail: "3×5" }, { name: "Жим стоя", detail: "4×6" }, { name: "Тяга штанги", detail: "4×8" }, { name: "Подъёмы на бицепс", detail: "3×10" }
+                    ]},
+                    { id: 102, name: "Базовая масса", difficulty: "intermediate", duration: "8 недель", days: 3, tags: ["масса", "база", "новичкам"], exercises: [
+                        { name: "Приседания", detail: "4×8" }, { name: "Жим лёжа", detail: "4×8" }, { name: "Тяга штанги", detail: "4×8" }, { name: "Отжимания на брусьях", detail: "3×10" }, { name: "Подтягивания", detail: "3×8" }
+                    ]},
+                    { id: 103, name: "Пауэрлифтинг PRO", difficulty: "advanced", duration: "16 недель", days: 5, tags: ["сила", "соревнования", "PRO"], exercises: [
+                        { name: "Приседания", detail: "6×3" }, { name: "Жим лёжа", detail: "6×3" }, { name: "Становая тяга", detail: "5×3" }, { name: "Жим ногами", detail: "4×10" }, { name: "Гиперэкстензия", detail: "3×15" }
+                    ]}
+                ]
+            },
+            {
+                id: 2,
+                name: "Анна Козлова",
+                initials: "АК",
+                specialty: "Функциональный тренинг & HIIT",
+                bio: "Сертифицированный тренер CrossFit L3. Призёр региональных соревнований. Специализация — функциональная подготовка и жиросжигание.",
+                avatarGradient: "linear-gradient(135deg, #e17055, #fdcb6e)",
+                stats: { programs: 6, clients: 520, experience: "8 лет", rating: "4.8" },
+                programs: [
+                    { id: 201, name: "HIIT-Жиросжигание", difficulty: "intermediate", duration: "6 недель", days: 4, tags: ["жиросжигание", "кардио", "HIIT"], exercises: [
+                        { name: "Бёрпи", detail: "4×15" }, { name: "Прыжки на коробку", detail: "4×12" }, { name: "Махи гирей", detail: "4×20" }, { name: "Трастеры", detail: "4×10" }, { name: "Скалолаз", detail: "4×30" }
+                    ]},
+                    { id: 202, name: "Кардио-интервалы", difficulty: "beginner", duration: "8 недель", days: 3, tags: ["кардио", "выносливость", "новичкам"], exercises: [
+                        { name: "Бег на месте", detail: "30 сек" }, { name: "Джампинг джек", detail: "4×20" }, { name: "Приседания с прыжком", detail: "3×12" }, { name: "Планка", detail: "3×45 сек" }, { name: "Высокие колени", detail: "3×20" }
+                    ]},
+                    { id: 203, name: "CrossFit WOD", difficulty: "advanced", duration: "10 недель", days: 5, tags: ["crossfit", "сила", "выносливость"], exercises: [
+                        { name: "Clean & Jerk", detail: "5×3" }, { name: "Snatch", detail: "5×2" }, { name: "Box Jumps", detail: "5×10" }, { name: "Rope Climb", detail: "3×1" }, { name: "Assault Bike", detail: "5×200м" }
+                    ]}
+                ]
+            },
+            {
+                id: 3,
+                name: "Мария Светлова",
+                initials: "МС",
+                specialty: "Йога & Растяжка",
+                bio: "Сертифицированный инструктор йоги (RYT-500). 10 лет практики. Специализация — гибкость, мобильность и восстановление.",
+                avatarGradient: "linear-gradient(135deg, #00b894, #00cec9)",
+                stats: { programs: 5, clients: 280, experience: "10 лет", rating: "5.0" },
+                programs: [
+                    { id: 301, name: "Растяжка и мобильность", difficulty: "beginner", duration: "10 недель", days: 3, tags: ["гибкость", "мобильность", "восстановление"], exercises: [
+                        { name: "Кошка-корова", detail: "3×10" }, { name: "Поза голубя", detail: "2×60 сек" }, { name: "Складка", detail: "3×45 сек" }, { name: "Поза собаки", detail: "3×30 сек" }, { name: "Мостик", detail: "3×15" }
+                    ]},
+                    { id: 302, name: "Утренняя йога", difficulty: "beginner", duration: "4 недели", days: 5, tags: ["йога", "утро", "энергия"], exercises: [
+                        { name: "Сурья Намаскар", detail: "5 кругов" }, { name: "Воин I", detail: "2×30 сек" }, { name: "Воин II", detail: "2×30 сек" }, { name: "Поза дерева", detail: "2×30 сек" }, { name: "Шавасана", detail: "5 мин" }
+                    ]},
+                    { id: 303, name: "Восстановление после тренировок", difficulty: "intermediate", duration: "6 недель", days: 2, tags: ["восстановление", "релакс", "здоровье"], exercises: [
+                        { name: "Пена-ролл", detail: "10 мин" }, { name: "Динамическая растяжка", detail: "15 мин" }, { name: "Йога-нидра", detail: "20 мин" }, { name: "Дыхательные практики", detail: "10 мин" }
+                    ]}
+                ]
+            },
+            {
+                id: 4,
+                name: "Максим Орлов",
+                initials: "МО",
+                specialty: "Бодибилдинг & Эстетика",
+                bio: "IFBB Pro. Победитель национальных чемпионатов. Специализация — гипертрофия, симметрия и подготовка к соревнованиям.",
+                avatarGradient: "linear-gradient(135deg, #fd79a8, #e84393)",
+                stats: { programs: 7, clients: 450, experience: "15 лет", rating: "4.9" },
+                programs: [
+                    { id: 401, name: "Грудь + Трицепс", difficulty: "intermediate", duration: "8 недель", days: 4, tags: ["грудь", "трицепс", "гипертрофия"], exercises: [
+                        { name: "Жим лёжа наклон", detail: "4×10" }, { name: "Разводка гантелей", detail: "3×12" }, { name: "Кроссовер", detail: "3×15" }, { name: "Французский жим", detail: "3×12" }, { name: "Разгибания на блоке", detail: "3×15" }
+                    ]},
+                    { id: 402, name: "Спина + Бицепс", difficulty: "intermediate", duration: "8 недель", days: 4, tags: ["спина", "бицепс", "гипертрофия"], exercises: [
+                        { name: "Подтягивания", detail: "4×10" }, { name: "Тяга штанги в наклоне", detail: "4×10" }, { name: "Тяга верхнего блока", detail: "3×12" }, { name: "Подъёмы на бицепс", detail: "3×12" }, { name: "Молотки", detail: "3×12" }
+                    ]},
+                    { id: 403, name: "Плечи + Пресс", difficulty: "beginner", duration: "6 недель", days: 3, tags: ["плечи", "пресс", "эстетика"], exercises: [
+                        { name: "Жим гантелей сидя", detail: "4×10" }, { name: "Махи в стороны", detail: "4×15" }, { name: "Махи в наклоне", detail: "3×15" }, { name: "Скручивания", detail: "4×20" }, { name: "Подъёмы ног", detail: "3×15" }
+                    ]},
+                    { id: 404, name: "Ноги — полная программа", difficulty: "advanced", duration: "10 недель", days: 2, tags: ["ноги", "квадрицепс", "бицепс бедра"], exercises: [
+                        { name: "Приседания со штангой", detail: "5×8" }, { name: "Жим ногами", detail: "4×12" }, { name: "Румынская тяга", detail: "4×10" }, { name: "Разгибания ног", detail: "3×15" }, { name: "Сгибания ног", detail: "3×15" }, { name: "Подъёмы на носки", detail: "4×20" }
+                    ]}
+                ]
+            },
+            {
+                id: 5,
+                name: "Елена Морозова",
+                initials: "ЕМ",
+                specialty: "Пилатес & Коррекция фигуры",
+                bio: "Сертифицированный инструктор Pilates Method Alliance. 9 лет опыта. Специализация — осанка,核心核心核心 (core) и коррекция фигуры.",
+                avatarGradient: "linear-gradient(135deg, #74b9ff, #0984e3)",
+                stats: { programs: 4, clients: 190, experience: "9 лет", rating: "4.7" },
+                programs: [
+                    { id: 501, name: "Пилатес для начинающих", difficulty: "beginner", duration: "6 недель", days: 3, tags: ["пилатес", "новичкам", "осанка"], exercises: [
+                        { name: "Сотня", detail: "5×10" }, { name: "Roll Up", detail: "3×8" }, { name: "Single Leg Stretch", detail: "3×10" }, { name: "Plank", detail: "3×30 сек" }, { name: "Swan", detail: "3×8" }
+                    ]},
+                    { id: 502, name: "Коррекция осанки", difficulty: "beginner", duration: "8 недель", days: 4, tags: ["осанка", "здоровье", "коррекция"], exercises: [
+                        { name: "Wall Angels", detail: "3×10" }, { name: "Cat-Cow", detail: "3×10" }, { name: "Bird-Dog", detail: "3×10" }, { name: "Thoracic Extension", detail: "3×8" }, { name: "Chin Tucks", detail: "3×10" }
+                    ]},
+                    { id: 503, name: "Core Strength", difficulty: "intermediate", duration: "6 недель", days: 3, tags: ["кор", "пресс", "стабильность"], exercises: [
+                        { name: "Dead Bug", detail: "3×10" }, { name: "Plank Variations", detail: "4×30 сек" }, { name: "Pallof Press", detail: "3×12" }, { name: "Russian Twist", detail: "3×20" }, { name: "Hollow Body Hold", detail: "3×20 сек" }
+                    ]}
+                ]
+            },
+            {
+                id: 6,
+                name: "Артём Кузнецов",
+                initials: "АК",
+                specialty: "Бег & Выносливость",
+                bio: "Мастер спорта по лёгкой атлетике. Марафонец с PB 2:28. Специализация — подготовка к забегам и развитие выносливости.",
+                avatarGradient: "linear-gradient(135deg, #ffeaa7, #fdcb6e)",
+                stats: { programs: 5, clients: 210, experience: "11 лет", rating: "4.8" },
+                programs: [
+                    { id: 601, name: "Подготовка к 5K", difficulty: "beginner", duration: "8 недель", days: 3, tags: ["бег", "5K", "новичкам"], exercises: [
+                        { name: "Лёгкий бег", detail: "20 мин" }, { name: "Интервалы", detail: "6×400м" }, { name: "Темповый бег", detail: "15 мин" }, { name: "Длинная пробежка", detail: "5 км" }, { name: "Восстановительный бег", detail: "15 мин" }
+                    ]},
+                    { id: 602, name: "Марафон-тренинг", difficulty: "advanced", duration: "16 недель", days: 5, tags: ["марафон", "выносливость", "PRO"], exercises: [
+                        { name: "Длинная пробежка", detail: "25-35 км" }, { name: "Темповый бег", detail: "10 км" }, { name: "Интервалы Yasso 800", detail: "10×800м" }, { name: "Лёгкий бег", detail: "8 км" }, { name: "Силовая для бегунов", detail: "45 мин" }
+                    ]},
+                    { id: 603, name: "Силовая для бегунов", difficulty: "intermediate", duration: "6 недель", days: 2, tags: ["сила", "бег", "профилактика"], exercises: [
+                        { name: "Приседания на одной ноге", detail: "3×10" }, { name: "Выпады", detail: "3×12" }, { name: "Подъёмы на носки", detail: "3×20" }, { name: "Планка боковая", detail: "3×30 сек" }, { name: "Ягодичный мост", detail: "3×15" }
+                    ]}
+                ]
+            }
+        ];
+
+        const recSteps = [
+            {
+                id: "goal",
+                label: "Цель",
+                question: "Какова ваша основная цель?",
+                description: "Выберите главную цель тренировок",
+                options: [
+                    { value: "weight_loss", icon: "🔥", title: "Жиросжигание", desc: "Снизить вес и процент жира" },
+                    { value: "muscle_gain", icon: "💪", title: "Набор массы", desc: "Увеличить мышечную массу" },
+                    { value: "strength", icon: "🏋️", title: "Сила", desc: "Увеличить силовые показатели" },
+                    { value: "endurance", icon: "🏃", title: "Выносливость", desc: "Развить кардио-выносливость" },
+                    { value: "flexibility", icon: "🧘", title: "Гибкость", desc: "Улучшить мобильность и растяжку" },
+                    { value: "health", icon: "❤️", title: "Здоровье", desc: "Общее укрепление организма" }
+                ]
+            },
+            {
+                id: "level",
+                label: "Уровень",
+                question: "Ваш уровень подготовки?",
+                description: "Будьте честны — это поможет подобрать оптимальную нагрузку",
+                options: [
+                    { value: "beginner", icon: "🌱", title: "Начинающий", desc: "Менее 6 месяцев опыта" },
+                    { value: "intermediate", icon: "🌿", title: "Средний", desc: "6 месяцев — 2 года" },
+                    { value: "advanced", icon: "🌳", title: "Продвинутый", desc: "Более 2 лет опыта" }
+                ]
+            },
+            {
+                id: "days",
+                label: "Дни",
+                question: "Сколько дней в неделю готовы тренироваться?",
+                description: "Реалистично оцените своё расписание",
+                options: [
+                    { value: "2", icon: "📅", title: "2 дня", desc: "Минимум для прогресса" },
+                    { value: "3", icon: "📅", title: "3 дня", desc: "Оптимальный баланс" },
+                    { value: "4", icon: "📅", title: "4 дня", desc: "Хороший темп" },
+                    { value: "5", icon: "📅", title: "5 дней", desc: "Максимальная отдача" }
+                ]
+            },
+            {
+                id: "equipment",
+                label: "Оборудование",
+                question: "Какое оборудование доступно?",
+                description: "Выберите всё, что у вас есть",
+                options: [
+                    { value: "gym", icon: "🏢", title: "Полный зал", desc: "Штанги, тренажёры, гантели" },
+                    { value: "dumbbells", icon: "🏋️", title: "Гантели", desc: "Домашний набор гантелей" },
+                    { value: "bodyweight", icon: "🤸", title: "Своё тело", desc: "Без оборудования" },
+                    { value: "bands", icon: "🎗️", title: "Резинки", desc: "Фитнес-резинки и эспандеры" }
+                ]
+            }
+        ];
+
+        // ===== STATE =====
+        let recAnswers = {};
+        let currentRecStep = 0;
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTrainers();
+            renderRecWizard();
+            initScrollAnimations();
+            initNavbar();
+            initRipple();
+        });
+
+        // ===== RENDER TRAINERS =====
+        function renderTrainers() {
+            const grid = document.getElementById('trainersGrid');
+            grid.innerHTML = trainers.map((trainer, i) => `
+                <div class="trainer-card animate-on-scroll delay-${Math.min(i + 1, 6)}">
+                    <div class="trainer-header">
+                        <div class="trainer-avatar" style="background: ${trainer.avatarGradient}">
+                            ${trainer.initials}
+                        </div>
+                        <div class="trainer-info">
+                            <div class="trainer-name">${trainer.name}</div>
+                            <div class="trainer-specialty">${trainer.specialty}</div>
+                            <div class="trainer-bio">${trainer.bio}</div>
+                        </div>
+                    </div>
+                    <div class="trainer-stats">
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.programs}</div>
+                            <div class="trainer-stat-label">Программ</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.clients}</div>
+                            <div class="trainer-stat-label">Клиентов</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.experience}</div>
+                            <div class="trainer-stat-label">Опыт</div>
+                        </div>
+                        <div class="trainer-stat">
+                            <div class="trainer-stat-value">${trainer.stats.rating}★</div>
+                            <div class="trainer-stat-label">Рейтинг</div>
+                        </div>
+                    </div>
+                    <div class="trainer-programs">
+                        <div class="trainer-programs-title">Программы тренировок</div>
+                        <div class="program-list">
+                            ${trainer.programs.map(program => `
+                                <div class="program-item" onclick="openProgramModal(${trainer.id}, ${program.id})">
+                                    <div class="program-icon" style="background: ${trainer.avatarGradient}20; color: ${trainer.avatarGradient.includes('6c5ce7') ? '#a29bfe' : trainer.avatarGradient.includes('e17055') ? '#fdcb6e' : trainer.avatarGradient.includes('00b894') ? '#00cec9' : trainer.avatarGradient.includes('fd79a8') ? '#e84393' : trainer.avatarGradient.includes('74b9ff') ? '#0984e3' : '#fdcb6e'}">
+                                        📋
+                                    </div>
+                                    <div class="program-details">
+                                        <div class="program-name">${program.name}</div>
+                                        <div class="program-meta">${program.duration} • ${program.days} дн/нед</div>
+                                    </div>
+                                    <span class="program-difficulty difficulty-${program.difficulty}">
+                                        ${program.difficulty === 'beginner' ? 'Начальный' : program.difficulty === 'intermediate' ? 'Средний' : 'Продвинутый'}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-init scroll animations for new elements
+            setTimeout(initScrollAnimations, 100);
+        }
+
+        // ===== RECOMMENDATION WIZARD =====
+        function renderRecWizard() {
+            const stepsContainer = document.getElementById('recSteps');
+            const formContainer = document.getElementById('recFormSteps');
+
+            stepsContainer.innerHTML = recSteps.map((step, i) => `
+                <div class="rec-step ${i === 0 ? 'active' : ''}" data-step="${i}">
+                    <div class="rec-step-circle">${i + 1}</div>
+                    <div class="rec-step-label">${step.label}</div>
+                    ${i < recSteps.length - 1 ? `<div class="rec-step-line" id="line-${i}"></div>` : ''}
+                </div>
+            `).join('');
+
+            formContainer.innerHTML = recSteps.map((step, i) => `
+                <div class="rec-form-step ${i === 0 ? 'active' : ''}" data-step="${i}">
+                    <div class="rec-question">${step.question}</div>
+                    <div class="rec-description">${step.description}</div>
+                    <div class="rec-options">
+                        ${step.options.map(opt => `
+                            <div class="rec-option" data-step="${i}" data-value="${opt.value}" onclick="selectRecOption(this, '${step.id}', '${opt.value}')">
+                                <div class="rec-option-icon">${opt.icon}</div>
+                                <div class="rec-option-title">${opt.title}</div>
+                                <div class="rec-option-desc">${opt.desc}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="rec-nav">
+                        <button class="btn btn-secondary" onclick="prevRecStep()" ${i === 0 ? 'disabled style="opacity:0.3;pointer-events:none"' : ''}>← Назад</button>
+                        <button class="btn btn-primary" onclick="nextRecStep()" id="recNextBtn">Далее →</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectRecOption(el, stepId, value) {
+            const stepEl = el.parentElement;
+            stepEl.querySelectorAll('.rec-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            recAnswers[stepId] = value;
+        }
+
+        function nextRecStep() {
+            const currentStep = recSteps[currentRecStep];
+            if (!recAnswers[currentStep.id]) {
+                showToast('Пожалуйста, выберите вариант', 'info');
+                return;
+            }
+
+            if (currentRecStep < recSteps.length - 1) {
+                // Move to next step
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('completed');
+
+                const line = document.getElementById(`line-${currentRecStep}`);
+                if (line) line.classList.add('filled');
+
+                currentRecStep++;
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.add('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('active');
+
+                // Update last button text
+                if (currentRecStep === recSteps.length - 1) {
+                    document.getElementById('recNextBtn').textContent = '🎯 Получить результаты';
+                }
+            } else {
+                // Show results
+                generateRecommendations();
+            }
+        }
+
+        function prevRecStep() {
+            if (currentRecStep > 0) {
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.remove('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('active');
+
+                currentRecStep--;
+                document.querySelector(`.rec-form-step[data-step="${currentRecStep}"]`).classList.add('active');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.remove('completed');
+                document.querySelector(`.rec-step[data-step="${currentRecStep}"]`).classList.add('active');
+
+                const line = document.getElementById(`line-${currentRecStep}`);
+                if (line) line.classList.remove('filled');
+
+                document.getElementById('recNextBtn').textContent = 'Далее →';
+            }
+        }
+
+        // ===== SMART RECOMMENDATION ENGINE =====
+        function generateRecommendations() {
+            const results = [];
+
+            trainers.forEach(trainer => {
+                trainer.programs.forEach(program => {
+                    let score = 0;
+                    let matchReasons = [];
+
+                    // 1. Goal matching
+                    const goalMapping = {
+                        weight_loss: ['жиросжигание', 'кардио', 'HIIT'],
+                        muscle_gain: ['масса', 'гипертрофия', 'эстетика'],
+                        strength: ['сила', 'база', 'пауэрлифтинг'],
+                        endurance: ['выносливость', 'кардио', 'бег'],
+                        flexibility: ['гибкость', 'мобильность', 'растяжка', 'йога', 'пилатес'],
+                        health: ['здоровье', 'восстановление', 'осанка', 'кор']
+                    };
+
+                    const goalKeywords = goalMapping[recAnswers.goal] || [];
+                    const hasGoalMatch = program.tags.some(tag =>
+                        goalKeywords.some(kw => tag.toLowerCase().includes(kw))
+                    );
+                    if (hasGoalMatch) {
+                        score += 30;
+                        matchReasons.push('Совпадение по цели');
+                    }
+
+                    // 2. Level matching
+                    if (program.difficulty === recAnswers.level) {
+                        score += 25;
+                        matchReasons.push('Подходит по уровню');
+                    } else if (
+                        (recAnswers.level === 'intermediate' && program.difficulty === 'beginner') ||
+                        (recAnswers.level === 'advanced' && program.difficulty === 'intermediate')
+                    ) {
+                        score += 10;
+                        matchReasons.push('Можно попробовать');
+                    }
+
+                    // 3. Days matching
+                    const preferredDays = parseInt(recAnswers.days);
+                    if (program.days === preferredDays) {
+                        score += 20;
+                        matchReasons.push('Идеальное кол-во дней');
+                    } else if (Math.abs(program.days - preferredDays) <= 1) {
+                        score += 10;
+                        matchReasons.push('Близко к расписанию');
+                    }
+
+                    // 4. Equipment compatibility
+                    const equipMapping = {
+                        gym: ['база', 'сила', 'масса', 'гипертрофия', 'кроссфит', 'соревнования', 'PRO'],
+                        dumbbells: ['масса', 'гипертрофия', 'эстетика'],
+                        bodyweight: ['жиросжигание', 'кардио', 'HIIT', 'новичкам', 'пилатес', 'йога', 'осанка'],
+                        bands: ['восстановление', 'гибкость', 'мобильность', 'осанка']
+                    };
+
+                    const equipKeywords = equipMapping[recAnswers.equipment] || [];
+                    const hasEquipMatch = program.tags.some(tag =>
+                        equipKeywords.some(kw => tag.toLowerCase().includes(kw))
+                    );
+                    if (hasEquipMatch) {
+                        score += 15;
+                        matchReasons.push('Подходит по оборудованию');
+                    }
+
+                    // 5. Specialty bonus (trainer specialization matches goal)
+                    const specialtyMapping = {
+                        weight_loss: ['Функциональный', 'HIIT'],
+                        muscle_gain: ['Бодибилдинг', 'Силовые'],
+                        strength: ['Силовые', 'Пауэрлифтинг'],
+                        endurance: ['Бег', 'Выносливость'],
+                        flexibility: ['Йога', 'Растяжка'],
+                        health: ['Пилатес', 'Йога', 'Растяжка']
+                    };
+
+                    const specKeywords = specialtyMapping[recAnswers.goal] || [];
+                    if (specKeywords.some(kw => trainer.specialty.includes(kw))) {
+                        score += 10;
+                        matchReasons.push('Специализация тренера');
+                    }
+
+                    // Add some randomness for variety
+                    score += Math.random() * 5;
+
+                    if (score >= 30) {
+                        const matchPercent = Math.min(Math.round((score / 100) * 100), 98);
+                        results.push({
+                            trainer,
+                            program,
+                            score: matchPercent,
+                            reasons: matchReasons
+                        });
+                    }
+                });
+            });
+
+            // Sort by score descending
+            results.sort((a, b) => b.score - a.score);
+
+            // Take top 6
+            const topResults = results.slice(0, 6);
+
+            renderRecResults(topResults);
+        }
+
+        function renderRecResults(results) {
+            // Hide wizard steps, show results
+            document.querySelectorAll('.rec-form-step').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.rec-step').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('completed');
+            });
+            document.querySelectorAll('.rec-step-line').forEach(el => el.classList.add('filled'));
+
+            const resultsContainer = document.getElementById('recResults');
+            resultsContainer.classList.add('active');
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="rec-results-header">
+                        <h3>😔 Не найдено подходящих программ</h3>
+                        <p>Попробуйте изменить параметры поиска</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="resetRecWizard()" style="margin: 0 auto; display: block;">🔄 Начать заново</button>
+                `;
+                return;
+            }
+
+            resultsContainer.innerHTML = `
+                <div class="rec-results-header">
+                    <h3>🎯 Ваши персональные рекомендации</h3>
+                    <p>Мы проанализировали ${results.length} программ и отобрали лучшие для вас</p>
+                </div>
+                <div class="rec-results-grid">
+                    ${results.map(r => `
+                        <div class="rec-result-card">
+                            <div class="rec-match-badge">${r.score}% совпадение</div>
+                            <div class="rec-result-trainer">
+                                <div class="rec-result-avatar" style="background: ${r.trainer.avatarGradient}">${r.trainer.initials}</div>
+                                <div>
+                                    <div class="rec-result-trainer-name">${r.trainer.name}</div>
+                                    <div class="rec-result-trainer-spec">${r.trainer.specialty}</div>
+                                </div>
+                            </div>
+                            <div class="rec-result-program">${r.program.name}</div>
+                            <div class="rec-result-tags">
+                                ${r.program.tags.map(t => `<span class="rec-result-tag">${t}</span>`).join('')}
+                                <span class="rec-result-tag">${r.program.duration}</span>
+                                <span class="rec-result-tag">${r.program.days} дн/нед</span>
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                ${r.reasons.join(' • ')}
+                            </div>
+                            <button class="rec-result-btn" onclick="openProgramModal(${r.trainer.id}, ${r.program.id})">
+                                Подробнее о программе →
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-secondary" onclick="resetRecWizard()">🔄 Пройти заново</button>
+                </div>
+            `;
+
+            showToast(`Найдено ${results.length} подходящих программ!`, 'success');
+        }
+
+        function resetRecWizard() {
+            recAnswers = {};
+            currentRecStep = 0;
+
+            document.getElementById('recResults').classList.remove('active');
+            document.getElementById('recResults').innerHTML = '';
+
+            document.querySelectorAll('.rec-form-step').forEach(el => el.classList.remove('active'));
+            document.querySelector('.rec-form-step[data-step="0"]').classList.add('active');
+
+            document.querySelectorAll('.rec-step').forEach(el => {
+                el.classList.remove('active', 'completed');
+            });
+            document.querySelector('.rec-step[data-step="0"]').classList.add('active');
+
+            document.querySelectorAll('.rec-step-line').forEach(el => el.classList.remove('filled'));
+
+            document.querySelectorAll('.rec-option').forEach(el => el.classList.remove('selected'));
+
+            document.getElementById('recNextBtn').textContent = 'Далее →';
+        }
+
+        // ===== PROGRAM MODAL =====
+        function openProgramModal(trainerId, programId) {
+            const trainer = trainers.find(t => t.id === trainerId);
+            const program = trainer.programs.find(p => p.id === programId);
+
+            if (!trainer || !program) return;
+
+            const modal = document.getElementById('programModal');
+            modal.innerHTML = `
+                <button class="program-modal-close" onclick="closeProgramModal()">✕</button>
+                <div class="program-modal-trainer">
+                    <div class="rec-result-avatar" style="border-radius: 15px; background: ${trainer.avatarGradient}">${trainer.initials}</div>
+                    <div>
+                        <div style="font-size: 0.85rem; font-weight: 600;">${trainer.name}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">${trainer.specialty}</div>
+                    </div>
+                </div>
+                <h2>${program.name}</h2>
+                <div style="display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                    <span class="program-difficulty difficulty-${program.difficulty}" style="font-size: 0.75rem; padding: 6px 14px;">
+                        ${program.difficulty === 'beginner' ? 'Начальный' : program.difficulty === 'intermediate' ? 'Средний' : 'Продвинутый'}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+                        📅 ${program.duration}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+                        🔄 ${program.days} дн/нед
+                    </span>
+                </div>
+                <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${program.tags.map(t => `<span class="rec-result-tag">${t}</span>`).join('')}
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem;">Упражнения</div>
+                    <div class="program-modal-exercises">
+                        ${program.exercises.map((ex, i) => `
+                            <div class="exercise-item">
+                                <div class="exercise-num">${i + 1}</div>
+                                <div class="exercise-name">${ex.name}</div>
+                                <div class="exercise-detail">${ex.detail}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="profile-edit-btn" style="margin-top: 2rem;" onclick="startProgram('${trainer.name}', '${program.name}')">
+                    🚀 Начать программу
+                </button>
+            `;
+
+            document.getElementById('programModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProgramModal() {
+            document.getElementById('programModalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeProgramModalOutside(e) {
+            if (e.target === document.getElementById('programModalOverlay')) {
+                closeProgramModal();
+            }
+        }
+
+        function startProgram(trainerName, programName) {
+            closeProgramModal();
+            showToast(`Программа "${programName}" добавлена в ваш план!`, 'success');
+        }
+
+        // ===== PROFILE =====
+        function openProfile() {
+            document.getElementById('profileOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfile() {
+            document.getElementById('profileOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeProfileOutside(e) {
+            if (e.target === document.getElementById('profileOverlay')) {
+                closeProfile();
+            }
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✅' : 'ℹ️'}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = '0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ===== SCROLL ANIMATIONS =====
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // ===== NAVBAR SCROLL =====
+        function initNavbar() {
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // ===== RIPPLE EFFECT =====
+        function initRipple() {
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn');
+                if (!btn) return;
+
+                const circle = document.createElement('span');
+                circle.className = 'btn-ripple';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                circle.style.width = circle.style.height = size + 'px';
+                circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                btn.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+        }
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') {
+                links.style.display = 'none';
+            } else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '72px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.background = 'rgba(10,10,10,0.98)';
+                links.style.padding = '1.5rem';
+                links.style.borderBottom = '1px solid var(--border)';
+            }
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeProfile();
+                closeProgramModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+</body>
+
+</html>
